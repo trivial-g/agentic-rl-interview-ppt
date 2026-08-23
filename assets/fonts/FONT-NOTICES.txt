@@ -1,0 +1,11 @@
+Font notices for the Agent Post-Training presentation
+
+MiSans
+- This presentation uses MiSans.
+- Source: https://hyperos.mi.com/font/en/download/
+- License: MiSans-LICENSE.pdf in this directory.
+
+Inter
+- This presentation uses Inter.
+- Source: https://github.com/rsms/inter
+- License: Inter-LICENSE.txt in this directory (SIL Open Font License 1.1).

@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Agentic-RL Post-Training 项目讲解"
+    />
+    <title>Agentic-RL Post-Training</title>
+    <link rel="stylesheet" href="./presentation.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="project-mark" href="#opening" aria-label="返回开场">
+        <span class="project-mark__index">RL</span>
+        <span class="project-mark__name">Agentic-RL Post-Training</span>
+      </a>
+
+      <div class="topbar__actions">
+        <div class="slide-count" aria-live="polite">
+          <span id="current-slide">01</span>
+          <span class="slide-count__divider">/</span>
+          <span id="total-slides">09</span>
+        </div>
+        <button class="icon-button" id="fullscreen-button" type="button">
+          <span class="fullscreen-icon" aria-hidden="true"></span>
+          <span class="sr-only">切换全屏</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="progress" aria-hidden="true">
+      <span class="progress__fill" id="progress-fill"></span>
+    </div>
+
+    <main id="deck">
+      <section class="slide slide--opening is-active" id="opening" data-slide="1">
+        <div class="opening-copy reveal-group">
+          <p class="kicker reveal">Project Overview</p>
+          <h1 class="opening-title reveal">
+            Agentic-RL
+            <span><b>Post-Training</b></span>
+          </h1>
+        </div>
+
+        <div class="overview-route reveal" aria-label="Cold-Start SFT、Agentic-RL 与 PinchBench Evaluation">
+          <div><small>Stage I</small><strong>Cold-Start SFT</strong></div>
+          <i aria-hidden="true">→</i>
+          <div><small>Stage II</small><strong>Agentic-RL</strong></div>
+          <i aria-hidden="true">→</i>
+          <div><small>Evaluation</small><strong>PinchBench</strong></div>
+        </div>
+
+      </section>
+
+      <section class="slide slide--framework" id="framework" data-slide="2">
+        <div class="framework-heading reveal-group">
+          <p class="kicker reveal">End-to-End Training</p>
+          <h2 class="section-title reveal">
+            Cold-Start SFT 初始化 Agent 能力，<span>Agentic-RL 基于真实任务反馈持续优化</span>
+          </h2>
+          <p class="section-intro reveal">
+            Offline Teacher Supervision → On-policy Reward Optimization
+          </p>
+        </div>
+
+        <div class="framework-pipeline reveal" aria-label="Cold-Start SFT 到 Agentic-RL 的两阶段训练流程">
+          <section class="training-stage training-stage--sft" aria-labelledby="sft-title">
+            <div class="training-stage__heading">
+              <small>Stage I</small>
+              <h3 id="sft-title">Cold-Start SFT</h3>
+            </div>
+
+            <div class="stage-flow stage-flow--sft" aria-label="Cold-Start SFT Pipeline">
+              <div class="training-node"><small>01</small><strong>Query Synthesis</strong><span>基于种子数据合成真实 Agent 任务</span></div>
+              <i class="framework-flow-arrow" aria-hidden="true">→</i>
+              <div class="training-node"><small>02</small><strong>Teacher Rollout</strong><span>Qwen Teacher 在沙箱中通过 OpenClaw 执行任务</span></div>
+              <i class="framework-flow-arrow" aria-hidden="true">→</i>
+              <div class="training-node"><small>03</small><strong>Quality Filtering</strong><span>自动判分、轨迹检查与人工抽样复核</span></div>
+              <i class="framework-flow-arrow" aria-hidden="true">→</i>
+              <div class="training-node"><small>04</small><strong>Cold-Start SFT</strong><span>64K Context · Full-Parameter</span></div>
+            </div>
+          </section>
+
+          <div class="checkpoint-handoff" aria-label="Cold-Start Checkpoint 是 Stage I 输出并初始化 Stage II">
+            <i aria-hidden="true">↓</i>
+            <div class="checkpoint-node">
+              <small>Stage I Output · Stage II Initialization</small>
+              <strong>Cold-Start Checkpoint</strong>
+              <span>作为 Agentic-RL 的初始化策略</span>
+            </div>
+            <i aria-hidden="true">↓</i>
+          </div>
+
+          <section class="training-stage training-stage--rl" aria-labelledby="rl-title">
+            <div class="training-stage__heading">
+              <small>Stage II</small>
+              <h3 id="rl-title">Agentic-RL</h3>
+            </div>
+
+            <div class="stage-flow stage-flow--rl" aria-label="Agentic-RL Pipeline">
+              <div class="training-node"><small>01</small><strong>Real Agent Task</strong><span>真实任务与沙箱初始状态</span></div>
+              <i class="framework-flow-arrow" aria-hidden="true">→</i>
+              <div class="training-node"><small>02</small><strong>Policy Rollout</strong><span>通过 OpenClaw 执行任务</span></div>
+              <i class="framework-flow-arrow" aria-hidden="true">→</i>
+              <div class="training-node"><small>03</small><strong>Reward</strong><span>Environment Reward + Hybrid Rubric</span></div>
+              <i class="framework-flow-arrow" aria-hidden="true">→</i>
+              <div class="training-node"><small>04</small><strong>GRPO Update</strong><span>计算优势并更新策略</span></div>
+              <i class="framework-flow-arrow" aria-hidden="true">→</i>
+              <div class="training-node"><small>05</small><strong>New Policy</strong><span>同步权重后继续 Rollout</span></div>
+
+              <div class="rl-return-loop" aria-label="New Policy 进入下一轮 Policy Rollout">
+                <i aria-hidden="true">←</i><span aria-hidden="true"></span><small>New Policy → Policy Rollout · Next Iteration</small>
+              </div>
+            </div>
+          </section>
+
+          <div class="engineering-support" aria-label="Agentic-RL 训练工程支撑">
+            <small>Engineering Support</small>
+            <span>异步调度与容错</span><i aria-hidden="true">·</i>
+            <span>Compaction-Aware 长程轨迹</span><i aria-hidden="true">·</i>
+            <span>Error-Aware 优势塑形</span>
+          </div>
+        </div>
+
+      </section>
+
+      <section class="slide slide--cold-start" id="cold-start" data-slide="3">
+        <div class="content-heading reveal-group">
+          <p class="kicker reveal">Cold-Start Data &amp; SFT</p>
+          <h2 class="section-title reveal">
+            Cold-Start SFT 只保留<span>可执行的 Teacher Agent 轨迹</span>
+          </h2>
+        </div>
+
+        <div class="cold-start-map reveal" aria-label="Cold-Start Data 与 SFT 流程">
+          <div class="cold-start-node"><small>Input</small><strong>Seed Tasks</strong><span>真实 Agent 任务种子</span></div>
+          <i class="cold-start-arrow" aria-hidden="true">→</i>
+          <div class="cold-start-node"><small>Query</small><strong>Query Synthesis</strong><span>任务类型 · 输入 · 执行约束</span></div>
+          <i class="cold-start-arrow" aria-hidden="true">→</i>
+          <div class="cold-start-node cold-start-node--teacher"><small>Teacher</small><strong>Teacher Rollout</strong><span>Qwen · Sandbox / OpenClaw</span></div>
+          <i class="cold-start-arrow" aria-hidden="true">→</i>
+          <div class="cold-start-node"><small>Filter</small><strong>Quality Filtering</strong><span>Verifier / Judge · Trajectory Validation · Human Review</span></div>
+          <i class="cold-start-arrow" aria-hidden="true">→</i>
+          <div class="cold-start-node cold-start-node--training"><small>Training</small><strong>Cold-Start SFT</strong><span>64K Context · Full-Parameter</span></div>
+          <i class="cold-start-arrow" aria-hidden="true">→</i>
+          <div class="cold-start-node cold-start-node--output"><small>Output</small><strong>Cold-Start Checkpoint</strong><span>Agentic-RL Initialization</span></div>
+        </div>
+      </section>
+
+      <section class="slide slide--task-reward" id="task-reward" data-slide="4">
+        <div class="content-heading reveal-group">
+          <p class="kicker reveal">Agentic-RL Task &amp; Reward</p>
+          <h2 class="section-title reveal">
+            Hybrid Rubric 将任务要求映射为<span>可验收的训练 Reward</span>
+          </h2>
+        </div>
+
+        <div class="task-reward-visual reveal" aria-label="Agentic-RL Task、Hybrid Rubric 与 Reward Validation">
+          <div class="task-reward-map">
+            <section class="task-reward-block">
+              <small>Agentic-RL Task</small>
+              <h3>Task Definition</h3>
+              <ul><li>Query</li><li>Environment</li><li>Deliverable</li></ul>
+            </section>
+
+            <i class="task-reward-arrow" aria-hidden="true">→</i>
+
+            <section class="task-reward-block task-reward-block--rubric">
+              <small>Hybrid Rubric</small>
+              <h3>Scoring Branches</h3>
+              <div><span>Executable Verifier</span><span>LLM-as-Judge</span></div>
+            </section>
+
+            <i class="task-reward-arrow" aria-hidden="true">→</i>
+
+            <section class="task-reward-block task-reward-block--reward">
+              <small>Task Reward</small>
+              <h3>Training Signal</h3>
+              <div><span>Outcome Reward</span><i>+</i><span>Process Error Signal</span></div>
+            </section>
+          </div>
+
+          <div class="reward-validation-strip">
+            <small>Reward Validation</small>
+            <div class="validation-samples"><span>Current Policy Samples</span><span>Reference Samples</span><span>Synthetic Negative Samples</span></div>
+            <i aria-hidden="true">→</i>
+            <div class="validation-checks"><span>Discrimination</span><span>Invalid Verifier</span><span>False Positive</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide slide--architecture" id="rl-architecture" data-slide="5">
+        <div class="content-heading reveal-group">
+          <p class="kicker reveal">Async Agentic-RL Architecture</p>
+          <h2 class="section-title reveal">
+            异步架构解耦 Rollout 与 Training，<span>权重与轨迹在闭环中流动</span>
+          </h2>
+        </div>
+
+        <div class="async-architecture reveal" aria-label="Agentic-RL 异步训练与 Rollout 闭环">
+          <div class="orchestrator-rail"><small>Orchestration</small><strong>Ray · slime</strong><span>Resource Scheduling · Policy Version · Async Coordination</span></div>
+
+          <div class="async-core-flow">
+            <div class="async-node async-node--actor"><small>Training</small><strong>Actor / GRPO</strong><span>Megatron</span></div>
+            <div class="async-arrow"><small>weights</small><i>→</i></div>
+            <div class="async-node"><small>Inference</small><strong>SGLang Policy</strong></div>
+            <div class="async-arrow"><small>actions</small><i>→</i></div>
+            <div class="async-node async-node--rollout"><small>Environment</small><strong>OpenClaw Rollout</strong></div>
+            <div class="async-arrow"><small>trajectory</small><i>→</i></div>
+            <div class="async-node"><small>Execution</small><strong>Trajectory</strong><span>Token · Log-prob · Mask</span></div>
+            <div class="async-arrow"><small>score</small><i>→</i></div>
+            <div class="async-node"><small>Reward</small><strong>Reward Service</strong><span>Verifier · LLM Judge</span></div>
+            <div class="async-arrow"><small>batch</small><i>→</i></div>
+            <div class="async-node"><small>Training Data</small><strong>Training Batch</strong></div>
+
+            <div class="async-return-loop"><i>←</i><span></span><small>Training Batch → Actor · Async Update</small></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide slide--scheduler" id="rollout-scheduling" data-slide="6">
+        <div class="content-heading reveal-group">
+          <p class="kicker reveal">Rollout Scheduling</p>
+          <h2 class="section-title reveal">
+            Training Demand 驱动 Rollout 生产，<span>失败任务自动回收重采样</span>
+          </h2>
+        </div>
+
+        <div class="rollout-scheduler reveal" aria-label="Rollout 任务调度、失败重采样与版本一致性">
+          <div class="scheduler-main-flow">
+            <div class="scheduler-node"><small>Demand</small><strong>Training Demand</strong></div>
+            <i class="scheduler-arrow" aria-hidden="true">→</i>
+            <div class="scheduler-node"><small>Allocation</small><strong>Query Allocation</strong></div>
+            <i class="scheduler-arrow" aria-hidden="true">→</i>
+            <div class="scheduler-node"><small>Isolation</small><strong>Independent Session</strong></div>
+            <i class="scheduler-arrow" aria-hidden="true">→</i>
+            <div class="scheduler-node scheduler-node--active"><small>Execution</small><strong>OpenClaw Execution</strong></div>
+            <i class="scheduler-arrow" aria-hidden="true">→</i>
+            <div class="scheduler-node"><small>Ready</small><strong>Completed Queue</strong></div>
+          </div>
+
+          <div class="scheduler-failure"><small>Timeout / Failure</small><i>→</i><span>Recycle</span><i>→</i><strong>New Session Resampling</strong></div>
+
+          <div class="scheduler-consistency"><small>Consistency</small><span>generation</span><i>·</i><span>policy version</span><i>·</i><strong>max rollout staleness ≤ 1 policy version</strong></div>
+        </div>
+      </section>
+
+      <section class="slide slide--compaction" id="compaction-training" data-slide="7">
+        <div class="content-heading reveal-group">
+          <p class="kicker reveal">Compaction-Aware Long-Horizon Training</p>
+          <h2 class="section-title reveal">
+            Context Compaction 打破 Token 对齐，<span>context_epoch 重建训练序列</span>
+          </h2>
+        </div>
+
+        <div class="compaction-visual reveal" aria-label="Context Compaction 前后的 Token 错位与 context_epoch 重建">
+          <section class="alignment-problem">
+            <div class="challenge-label"><small>Problem</small><strong>Token Alignment Mismatch</strong></div>
+            <div class="alignment-state">
+              <small>Before Compaction</small>
+              <div class="alignment-track"><span>Prompt</span><span>Response</span><span>rollout log-prob</span><span>loss mask</span></div>
+            </div>
+            <div class="context-boundary"><i></i><strong>Context Boundary</strong><span>summary replaces old context</span></div>
+            <div class="alignment-state alignment-state--mismatch">
+              <small>After Compaction</small>
+              <div class="alignment-track"><span>Compacted Context</span><span>Response</span><span class="is-offset">log-prob offset</span><span class="is-offset">mask offset</span></div>
+            </div>
+          </section>
+
+          <i class="challenge-transfer" aria-hidden="true">→</i>
+
+          <section class="alignment-solution">
+            <div class="challenge-label"><small>Solution</small><strong>context_epoch</strong></div>
+            <div class="alignment-solution-flow">
+              <div><small>01</small><strong>Segment Trajectory</strong></div><i>→</i>
+              <div><small>02</small><strong>Rebuild Token Alignment</strong></div><i>→</i>
+              <div><small>03</small><strong>Segment Loss</strong></div><i>→</i>
+              <div><small>04</small><strong>Execution Loss</strong></div>
+            </div>
+            <p>Prompt · Response · rollout log-prob · loss mask</p>
+          </section>
+        </div>
+      </section>
+
+      <section class="slide slide--error-aware" id="error-aware-advantage" data-slide="8">
+        <div class="content-heading reveal-group">
+          <p class="kicker reveal">Error-Aware Advantage</p>
+          <h2 class="section-title reveal">
+            最终成功不能掩盖中间无效动作，<span>Error-Aware Advantage 修正训练信号</span>
+          </h2>
+        </div>
+
+        <div class="error-visual reveal" aria-label="Outcome Reward 与 Process Error 组合为 Error-Aware Advantage">
+          <div class="error-principle"><span>Outcome Reward</span><i>+</i><span>Process Error</span><i>→</i><strong>Error-Aware Advantage</strong></div>
+
+          <div class="error-details">
+            <section class="process-error-signals">
+              <div class="challenge-label"><small>Process Error</small><strong>Invalid Intermediate Actions</strong></div>
+              <div class="error-types"><span>Format Error</span><span>Parsing Error</span><span>Tool Execution Error</span></div>
+              <div class="severity-scale"><small>Severity</small><span>Low</span><i></i><span>Medium</span><i></i><span>High</span></div>
+            </section>
+
+            <section class="advantage-rules">
+              <div class="challenge-label"><small>After GRPO Normalization</small><strong>Advantage Correction</strong></div>
+              <table>
+                <tbody>
+                  <tr><td>A &gt; 0</td><td>Zero positive advantage</td></tr>
+                  <tr><td>A = 0</td><td>Inject negative signal</td></tr>
+                  <tr><td>A &lt; 0</td><td>Amplify by severity</td></tr>
+                </tbody>
+              </table>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide slide--evaluation" id="evaluation" data-slide="9">
+        <div class="content-heading reveal-group">
+          <p class="kicker reveal">Results / Evaluation</p>
+          <h2 class="section-title reveal">
+            Base Model、Cold-Start SFT 与 Agentic-RL<span>在 PinchBench 上直接对比</span>
+          </h2>
+          <p class="section-intro reveal">PinchBench · 147 Agent Tasks</p>
+        </div>
+
+        <div class="evaluation-results reveal" aria-label="Base Model、Cold-Start SFT 与 Agentic-RL 的 PinchBench 结果对比">
+          <div class="results-header"><small>Model / Training Stage</small><small>PinchBench Performance</small></div>
+          <div class="result-row"><span>01</span><strong>Base Model</strong><b>[BASE SCORE]</b></div>
+          <div class="result-row"><span>02</span><strong>Cold-Start SFT</strong><b>[SFT SCORE]</b></div>
+          <div class="result-row result-row--rl"><span>03</span><strong>Agentic-RL</strong><b>[RL SCORE]</b></div>
+
+          <div class="evaluation-protocol"><small>Evaluation Protocol</small><span>Final Checkpoint</span><i>→</i><span>OpenClaw</span><i>→</i><span>Grading</span></div>
+        </div>
+      </section>
+    </main>
+
+    <nav class="deck-nav" id="deck-nav" aria-label="演示导航"></nav>
+
+    <div class="presentation-controls" role="group" aria-label="演示控制">
+      <div class="control-zone control-zone--framework">
+        <span class="control-zone__label" id="framework-control-label">查看完整训练框架</span>
+        <button
+          class="control-button"
+          id="framework-toggle"
+          type="button"
+          aria-controls="framework"
+          aria-expanded="false"
+          aria-labelledby="framework-control-label"
+          title="展开完整训练框架"
+        >
+          <span id="framework-toggle-icon" aria-hidden="true">↓</span>
+        </button>
+      </div>
+
+      <div class="control-zone control-zone--paging">
+        <span class="control-zone__label" id="page-switch-label">切换页面</span>
+        <div class="page-stepper" aria-labelledby="page-switch-label">
+          <button class="control-button" id="previous-slide" type="button" aria-label="上一页" title="上一页">
+            <span aria-hidden="true">↑</span>
+          </button>
+          <button class="control-button" id="next-slide" type="button" aria-label="下一页" title="下一页">
+            <span aria-hidden="true">↓</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
