@@ -5196,16 +5196,16 @@ main {
 }
 
 .process-error-handoff small {
-  color: var(--blue);
+  color: rgba(20, 95, 232, 0.72);
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .process-error-handoff strong {
-  color: var(--ink);
+  color: var(--muted);
   font-family: var(--font-latin);
-  font-size: 0.92rem;
-  font-weight: 600;
+  font-size: 0.88rem;
+  font-weight: 500;
 }
 
 .process-error-handoff i {
@@ -5216,17 +5216,22 @@ main {
 
 .process-error-handoff span {
   color: var(--soft);
-  font-size: 0.84rem;
+  font-size: 0.82rem;
 }
 
 .reward-validation-strip {
-  min-height: 4.6rem;
+  min-height: 4rem;
   display: grid;
   grid-template-columns: auto minmax(0, 1.25fr) 2rem minmax(0, 1fr);
   gap: 1rem;
   align-items: center;
-  padding-top: 0.75rem;
-  border-top: 1px solid rgba(35, 57, 88, 0.14);
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(35, 57, 88, 0.1);
+}
+
+.reward-validation-strip > small {
+  color: var(--soft);
+  font-weight: 500;
 }
 
 .validation-samples,
@@ -5239,14 +5244,14 @@ main {
 
 .validation-samples span,
 .validation-checks span {
-  color: var(--muted);
-  font-size: 0.82rem;
+  color: var(--soft);
+  font-size: 0.8rem;
   font-weight: 400;
   white-space: nowrap;
 }
 
 .reward-validation-strip > i {
-  color: var(--blue);
+  color: rgba(20, 95, 232, 0.48);
   font-style: normal;
   text-align: center;
 }
@@ -5957,10 +5962,15 @@ main {
 }
 
 .advantage-rules td:first-child {
-  width: 24%;
+  width: 30%;
   color: var(--blue-deep);
   font-family: var(--font-latin);
   font-weight: 600;
+}
+
+.advantage-rules sub {
+  font-size: 0.68em;
+  vertical-align: -0.18em;
 }
 
 /* Page 9 */

@@ -80,7 +80,7 @@
               <i class="framework-flow-arrow" aria-hidden="true">→</i>
               <div class="training-node"><small>03</small><strong>轨迹筛选</strong><span>自动判分、轨迹检查与人工抽样复核</span></div>
               <i class="framework-flow-arrow" aria-hidden="true">→</i>
-              <div class="training-node"><small>04</small><strong>Cold-Start SFT</strong><span>64K Context · Full-Parameter</span></div>
+              <div class="training-node"><small>04</small><strong>Cold-Start SFT</strong><span>64K Context · 全参数训练</span></div>
             </div>
           </section>
 
@@ -144,7 +144,7 @@
           <i class="cold-start-arrow" aria-hidden="true">→</i>
           <div class="cold-start-node"><strong>轨迹筛选</strong><span>Verifier / LLM Judge · 轨迹校验 · 人工抽检</span></div>
           <i class="cold-start-arrow" aria-hidden="true">→</i>
-          <div class="cold-start-node cold-start-node--training"><strong>Cold-Start SFT</strong><span>64K Context · Full-Parameter</span></div>
+          <div class="cold-start-node cold-start-node--training"><strong>Cold-Start SFT</strong><span>64K Context · 全参数训练</span></div>
           <i class="cold-start-arrow" aria-hidden="true">→</i>
           <div class="cold-start-node cold-start-node--output"><strong>Cold-Start Checkpoint</strong><span>Agentic-RL 初始化</span></div>
         </div>
@@ -183,11 +183,11 @@
             </section>
           </div>
 
-          <div class="process-error-handoff" aria-label="执行过程产生独立的 Process Error Signal，用于后续 Advantage 修正">
+          <div class="process-error-handoff" aria-label="执行过程产生独立的过程错误信号，用于后续优势修正">
             <small>执行过程</small>
-            <strong>Process Error Signal</strong>
+            <strong>过程错误信号</strong>
             <i aria-hidden="true">→</i>
-            <span>用于后续 Advantage 修正</span>
+            <span>用于第 8 页优势修正</span>
           </div>
 
           <div class="reward-validation-strip">
@@ -207,44 +207,44 @@
           </h2>
         </div>
 
-        <div class="async-architecture reveal" aria-label="Training Plane 与 Rollout Plane 通过权重同步和轨迹队列异步协作">
+        <div class="async-architecture reveal" aria-label="训练侧与 Rollout 侧通过权重同步和轨迹队列异步协作">
           <div class="orchestrator-rail"><small>调度与编排层</small><strong>Ray · slime</strong><span>资源调度 · policy version · 异步协同</span></div>
 
           <div class="async-planes">
             <section class="async-plane async-plane--training" aria-labelledby="training-plane-title">
               <div class="async-plane__heading">
-                <small>Training Plane</small>
+                <small>训练侧</small>
                 <h3 id="training-plane-title">训练与参数更新</h3>
               </div>
               <div class="plane-primary-node">
                 <strong>Actor / GRPO</strong>
                 <span>Megatron</span>
               </div>
-              <div class="training-update-flow"><span>训练 Batch</span><i>→</i><strong>Policy Update</strong></div>
+              <div class="training-update-flow"><span>训练 Batch</span><i>→</i><strong>策略更新</strong></div>
             </section>
 
-            <div class="async-channels" aria-label="Training Plane 与 Rollout Plane 之间的异步通道">
+            <div class="async-channels" aria-label="训练侧与 Rollout 侧之间的异步通道">
               <div class="async-channel async-channel--weights">
-                <small>Training → Rollout</small>
-                <div><strong>Weight Sync</strong><span>policy version</span><i>→</i></div>
+                <small>训练侧 → Rollout 侧</small>
+                <div><strong>权重同步</strong><span>policy version</span><i>→</i></div>
               </div>
               <div class="async-channel async-channel--trajectory">
-                <small>Rollout → Training</small>
-                <div><i>←</i><strong>Trajectory Queue</strong><span>Reward Service → 训练 Batch</span></div>
+                <small>Rollout 侧 → 训练侧</small>
+                <div><i>←</i><strong>轨迹队列</strong><span>Reward Service → 训练 Batch</span></div>
               </div>
             </div>
 
             <section class="async-plane async-plane--rollout" aria-labelledby="rollout-plane-title">
               <div class="async-plane__heading">
-                <small>Rollout Plane</small>
+                <small>Rollout 侧</small>
                 <h3 id="rollout-plane-title">真实任务执行</h3>
               </div>
               <div class="rollout-interaction">
                 <div class="plane-primary-node"><strong>SGLang Policy</strong></div>
                 <div class="bidirectional-link"><span>动作</span><i>⇄</i><span>环境反馈</span></div>
-                <div class="plane-primary-node"><strong>OpenClaw Environment</strong></div>
+                <div class="plane-primary-node"><strong>OpenClaw 环境</strong></div>
               </div>
-              <div class="rollout-output"><strong>Trajectory</strong><span>Token · log-prob · loss mask</span></div>
+              <div class="rollout-output"><strong>Agent 轨迹</strong><span>Token · log-prob · loss mask</span></div>
             </section>
           </div>
         </div>
@@ -296,9 +296,9 @@
             <div class="epoch-sequence">
               <div class="epoch-segment"><small>context_epoch 0</small><strong>Prompt₀ → Response₀</strong></div>
               <div class="epoch-boundary"><i></i><span>Compaction</span><i></i></div>
-              <div class="epoch-segment"><small>context_epoch 1</small><strong>Compacted Prompt₁ → Response₁</strong></div>
+              <div class="epoch-segment"><small>context_epoch 1</small><strong>压缩后 Prompt₁ → Response₁</strong></div>
               <div class="epoch-boundary"><i></i><span>Compaction</span><i></i></div>
-              <div class="epoch-segment"><small>context_epoch 2</small><strong>Compacted Prompt₂ → Response₂</strong></div>
+              <div class="epoch-segment"><small>context_epoch 2</small><strong>压缩后 Prompt₂ → Response₂</strong></div>
             </div>
             <div class="epoch-conclusion"><span>不同 epoch 使用不同 Prompt Context</span><i>→</i><strong>不能拼接为单一连续训练序列</strong></div>
           </section>
@@ -322,29 +322,29 @@
         <div class="content-heading reveal-group">
           <p class="kicker reveal">过程错误与优势修正</p>
           <h2 class="section-title reveal">
-            先计算 GRPO Advantage，<span>再用过程错误修正训练信号</span>
+            先计算 GRPO 原始优势，<span>再用过程错误修正训练信号</span>
           </h2>
         </div>
 
-        <div class="error-visual reveal" aria-label="Outcome Reward 经 GRPO 归一化得到原始优势，再用 Process Error Signal 修正">
+        <div class="error-visual reveal" aria-label="Outcome Reward 经 GRPO 归一化得到原始优势，再用过程错误信号修正">
           <div class="error-principle"><span>Outcome Reward</span><i>→</i><span>GRPO 组内归一化</span><i>→</i><strong>原始优势 A<sub>GRPO</sub></strong></div>
 
           <div class="error-details">
             <section class="process-error-signals">
-              <div class="challenge-label"><small>Process Error Signal</small><strong>可归因于 Policy 的过程错误</strong></div>
+              <div class="challenge-label"><small>过程错误信号</small><strong>可归因于 Policy 的过程错误</strong></div>
               <div class="error-types"><span>格式错误</span><span>参数 / 解析错误</span><span>无效工具调用</span></div>
               <div class="severity-scale"><small>严重程度</small><span>轻</span><i></i><span>中</span><i></i><span>重</span></div>
               <p class="attribution-note">不惩罚环境或工具服务自身故障</p>
             </section>
 
             <section class="advantage-rules">
-              <div class="advantage-correction-flow"><span>原始优势 A<sub>GRPO</sub></span><i>+</i><span>Process Error Correction</span><i>→</i><strong>最终训练优势</strong></div>
-              <div class="challenge-label"><small>Error-Aware Correction</small><strong>优势修正规则</strong></div>
+              <div class="advantage-correction-flow"><span>原始优势 A<sub>GRPO</sub></span><i>+</i><span>过程错误修正</span><i>→</i><strong>最终训练优势</strong></div>
+              <div class="challenge-label"><strong>优势修正规则</strong></div>
               <table>
                 <tbody>
-                  <tr><td>A &gt; 0</td><td>正优势置零</td></tr>
-                  <tr><td>A = 0</td><td>注入负信号</td></tr>
-                  <tr><td>A &lt; 0</td><td>按严重度放大</td></tr>
+                  <tr><td>A<sub>GRPO</sub> &gt; 0</td><td>正优势置零</td></tr>
+                  <tr><td>A<sub>GRPO</sub> = 0</td><td>注入负信号</td></tr>
+                  <tr><td>A<sub>GRPO</sub> &lt; 0</td><td>按严重程度放大</td></tr>
                 </tbody>
               </table>
             </section>
