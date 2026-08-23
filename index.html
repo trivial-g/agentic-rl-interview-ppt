@@ -42,6 +42,7 @@
             Agentic-RL
             <span><b>Post-Training</b></span>
           </h1>
+          <p class="opening-positioning reveal">面向 OpenClaw 真实工具任务的 Agentic-RL 后训练</p>
         </div>
 
         <div class="overview-route reveal" aria-label="Cold-Start SFT、Agentic-RL 与 PinchBench 评测">
@@ -104,7 +105,7 @@
               <i class="framework-flow-arrow" aria-hidden="true">→</i>
               <div class="training-node"><small>02</small><strong>Policy Rollout</strong><span>通过 OpenClaw 执行任务</span></div>
               <i class="framework-flow-arrow" aria-hidden="true">→</i>
-              <div class="training-node"><small>03</small><strong>Reward</strong><span>环境 Reward + Hybrid Rubric</span></div>
+              <div class="training-node"><small>03</small><strong>Outcome Reward</strong><span>Hybrid Rubric 计算任务结果得分</span></div>
               <i class="framework-flow-arrow" aria-hidden="true">→</i>
               <div class="training-node"><small>04</small><strong>GRPO 更新</strong><span>计算优势并更新策略</span></div>
               <i class="framework-flow-arrow" aria-hidden="true">→</i>
@@ -130,22 +131,22 @@
         <div class="content-heading reveal-group">
           <p class="kicker reveal">冷启动数据与 SFT</p>
           <h2 class="section-title reveal">
-            Cold-Start SFT 只保留<span>可执行的 Teacher Agent 轨迹</span>
+            高质量 Teacher 轨迹<span>构成 Cold-Start SFT 数据</span>
           </h2>
         </div>
 
         <div class="cold-start-map reveal" aria-label="冷启动数据与 SFT 流程">
-          <div class="cold-start-node"><small>输入</small><strong>种子任务</strong><span>真实 Agent 任务种子</span></div>
+          <div class="cold-start-node"><strong>种子任务</strong><span>真实 Agent 任务</span></div>
           <i class="cold-start-arrow" aria-hidden="true">→</i>
-          <div class="cold-start-node"><small>Query</small><strong>Query 合成</strong><span>任务类型 · 输入 · 执行约束</span></div>
+          <div class="cold-start-node"><strong>Query 合成</strong><span>任务类型 · 输入 · 执行约束</span></div>
           <i class="cold-start-arrow" aria-hidden="true">→</i>
-          <div class="cold-start-node cold-start-node--teacher"><small>Teacher</small><strong>Teacher Rollout</strong><span>Qwen · 沙箱 / OpenClaw</span></div>
+          <div class="cold-start-node cold-start-node--teacher"><strong>Teacher Rollout</strong><span>Qwen · 沙箱 / OpenClaw</span></div>
           <i class="cold-start-arrow" aria-hidden="true">→</i>
-          <div class="cold-start-node"><small>筛选</small><strong>轨迹筛选</strong><span>Verifier / LLM Judge · 轨迹校验 · 人工抽检</span></div>
+          <div class="cold-start-node"><strong>轨迹筛选</strong><span>Verifier / LLM Judge · 轨迹校验 · 人工抽检</span></div>
           <i class="cold-start-arrow" aria-hidden="true">→</i>
-          <div class="cold-start-node cold-start-node--training"><small>训练</small><strong>Cold-Start SFT</strong><span>64K Context · Full-Parameter</span></div>
+          <div class="cold-start-node cold-start-node--training"><strong>Cold-Start SFT</strong><span>64K Context · Full-Parameter</span></div>
           <i class="cold-start-arrow" aria-hidden="true">→</i>
-          <div class="cold-start-node cold-start-node--output"><small>输出</small><strong>Cold-Start Checkpoint</strong><span>Agentic-RL 初始化</span></div>
+          <div class="cold-start-node cold-start-node--output"><strong>Cold-Start Checkpoint</strong><span>Agentic-RL 初始化</span></div>
         </div>
       </section>
 
@@ -153,7 +154,7 @@
         <div class="content-heading reveal-group">
           <p class="kicker reveal">Agentic-RL 任务与 Reward</p>
           <h2 class="section-title reveal">
-            Hybrid Rubric 将任务要求映射为<span>可验收的训练 Reward</span>
+            Hybrid Rubric 将任务要求映射为<span>可验收的 Outcome Reward</span>
           </h2>
         </div>
 
@@ -176,10 +177,17 @@
             <i class="task-reward-arrow" aria-hidden="true">→</i>
 
             <section class="task-reward-block task-reward-block--reward">
-              <small>任务 Reward</small>
-              <h3>训练信号</h3>
-              <div><span>Outcome Reward</span><i>+</i><span>过程错误信号</span></div>
+              <small>任务结果</small>
+              <h3>Outcome Reward</h3>
+              <p>Hybrid Rubric 评分结果</p>
             </section>
+          </div>
+
+          <div class="process-error-handoff" aria-label="执行过程产生独立的 Process Error Signal，用于后续 Advantage 修正">
+            <small>执行过程</small>
+            <strong>Process Error Signal</strong>
+            <i aria-hidden="true">→</i>
+            <span>用于后续 Advantage 修正</span>
           </div>
 
           <div class="reward-validation-strip">
@@ -199,23 +207,45 @@
           </h2>
         </div>
 
-        <div class="async-architecture reveal" aria-label="Agentic-RL 异步训练与 Rollout 闭环">
-          <div class="orchestrator-rail"><small>调度层</small><strong>Ray · slime</strong><span>资源调度 · policy version · 异步协同</span></div>
+        <div class="async-architecture reveal" aria-label="Training Plane 与 Rollout Plane 通过权重同步和轨迹队列异步协作">
+          <div class="orchestrator-rail"><small>调度与编排层</small><strong>Ray · slime</strong><span>资源调度 · policy version · 异步协同</span></div>
 
-          <div class="async-core-flow">
-            <div class="async-node async-node--actor"><small>训练</small><strong>Actor / GRPO</strong><span>Megatron</span></div>
-            <div class="async-arrow"><small>权重</small><i>→</i></div>
-            <div class="async-node"><small>推理</small><strong>SGLang Policy</strong></div>
-            <div class="async-arrow"><small>动作</small><i>→</i></div>
-            <div class="async-node async-node--rollout"><small>环境</small><strong>OpenClaw Rollout</strong></div>
-            <div class="async-arrow"><small>轨迹</small><i>→</i></div>
-            <div class="async-node"><small>轨迹</small><strong>Agent 交互轨迹</strong><span>Token · log-prob · loss mask</span></div>
-            <div class="async-arrow"><small>评分</small><i>→</i></div>
-            <div class="async-node"><small>Reward</small><strong>Reward Service</strong><span>Verifier · LLM Judge</span></div>
-            <div class="async-arrow"><small>Batch</small><i>→</i></div>
-            <div class="async-node"><small>训练数据</small><strong>训练 Batch</strong></div>
+          <div class="async-planes">
+            <section class="async-plane async-plane--training" aria-labelledby="training-plane-title">
+              <div class="async-plane__heading">
+                <small>Training Plane</small>
+                <h3 id="training-plane-title">训练与参数更新</h3>
+              </div>
+              <div class="plane-primary-node">
+                <strong>Actor / GRPO</strong>
+                <span>Megatron</span>
+              </div>
+              <div class="training-update-flow"><span>训练 Batch</span><i>→</i><strong>Policy Update</strong></div>
+            </section>
 
-            <div class="async-return-loop"><i>←</i><span></span><small>训练 Batch → Actor · 异步更新</small></div>
+            <div class="async-channels" aria-label="Training Plane 与 Rollout Plane 之间的异步通道">
+              <div class="async-channel async-channel--weights">
+                <small>Training → Rollout</small>
+                <div><strong>Weight Sync</strong><span>policy version</span><i>→</i></div>
+              </div>
+              <div class="async-channel async-channel--trajectory">
+                <small>Rollout → Training</small>
+                <div><i>←</i><strong>Trajectory Queue</strong><span>Reward Service → 训练 Batch</span></div>
+              </div>
+            </div>
+
+            <section class="async-plane async-plane--rollout" aria-labelledby="rollout-plane-title">
+              <div class="async-plane__heading">
+                <small>Rollout Plane</small>
+                <h3 id="rollout-plane-title">真实任务执行</h3>
+              </div>
+              <div class="rollout-interaction">
+                <div class="plane-primary-node"><strong>SGLang Policy</strong></div>
+                <div class="bidirectional-link"><span>动作</span><i>⇄</i><span>环境反馈</span></div>
+                <div class="plane-primary-node"><strong>OpenClaw Environment</strong></div>
+              </div>
+              <div class="rollout-output"><strong>Trajectory</strong><span>Token · log-prob · loss mask</span></div>
+            </section>
           </div>
         </div>
       </section>
@@ -224,62 +254,66 @@
         <div class="content-heading reveal-group">
           <p class="kicker reveal">Rollout 调度</p>
           <h2 class="section-title reveal">
-            训练需求驱动 Rollout 生产，<span>失败任务自动回收重采样</span>
+            Batch 缺口驱动 Rollout 生产，<span>失败任务自动回收重采样</span>
           </h2>
         </div>
 
         <div class="rollout-scheduler reveal" aria-label="Rollout 任务调度、失败重采样与版本一致性">
           <div class="scheduler-main-flow">
-            <div class="scheduler-node"><small>需求</small><strong>训练需求</strong></div>
+            <div class="scheduler-node scheduler-node--demand"><strong>Batch 缺口</strong><span>按 iteration 的有效样本缺口补充 Rollout</span></div>
             <i class="scheduler-arrow" aria-hidden="true">→</i>
-            <div class="scheduler-node"><small>分配</small><strong>Query 分配</strong></div>
+            <div class="scheduler-node"><strong>Query 分配</strong></div>
             <i class="scheduler-arrow" aria-hidden="true">→</i>
-            <div class="scheduler-node"><small>隔离</small><strong>独立 Session</strong></div>
+            <div class="scheduler-node"><strong>独立 Session</strong></div>
             <i class="scheduler-arrow" aria-hidden="true">→</i>
-            <div class="scheduler-node scheduler-node--active"><small>执行</small><strong>OpenClaw 执行</strong></div>
+            <div class="scheduler-node scheduler-node--active"><strong>OpenClaw 执行</strong></div>
             <i class="scheduler-arrow" aria-hidden="true">→</i>
-            <div class="scheduler-node"><small>就绪</small><strong>完成队列</strong></div>
+            <div class="scheduler-node"><strong>完成队列</strong></div>
           </div>
 
           <div class="scheduler-failure"><small>超时 / 失败</small><i>→</i><span>任务回收</span><i>→</i><strong>新 Session 重采样</strong></div>
 
-          <div class="scheduler-consistency"><small>一致性约束</small><span>generation</span><i>·</i><span>policy version</span><i>·</i><strong>max rollout staleness ≤ 1 policy version</strong></div>
+          <div class="scheduler-consistency">
+            <small>一致性约束</small>
+            <div><strong>generation</strong><span>隔离旧执行</span></div>
+            <div><strong>policy version</strong><span>标记轨迹来源</span></div>
+            <div><strong>staleness ≤ 1</strong><span>限制过期 Rollout</span></div>
+          </div>
         </div>
       </section>
 
       <section class="slide slide--compaction" id="compaction-training" data-slide="7">
         <div class="content-heading reveal-group">
-          <p class="kicker reveal">长程 Rollout · Compaction</p>
+          <p class="kicker reveal">长程训练一致性</p>
           <h2 class="section-title reveal">
-            Context Compaction 打破 Token 对齐，<span>context_epoch 重建训练序列</span>
+            Compaction 改变 Prompt Context，<span>context_epoch 按连续上下文重建训练序列</span>
           </h2>
         </div>
 
-        <div class="compaction-visual reveal" aria-label="Context Compaction 前后的 Token 错位与 context_epoch 重建">
+        <div class="compaction-visual reveal" aria-label="Execution 跨越多个 context_epoch 后的上下文不连续与训练序列重建">
           <section class="alignment-problem">
-            <div class="challenge-label"><small>问题</small><strong>Token 对齐错位</strong></div>
-            <div class="alignment-state">
-              <small>压缩前</small>
-              <div class="alignment-track"><span>输入序列</span><span>响应序列</span><span>rollout log-prob</span><span>loss mask</span></div>
+            <div class="challenge-label"><small>问题</small><strong>一个 Execution 跨越多个 context_epoch</strong></div>
+            <div class="epoch-sequence">
+              <div class="epoch-segment"><small>context_epoch 0</small><strong>Prompt₀ → Response₀</strong></div>
+              <div class="epoch-boundary"><i></i><span>Compaction</span><i></i></div>
+              <div class="epoch-segment"><small>context_epoch 1</small><strong>Compacted Prompt₁ → Response₁</strong></div>
+              <div class="epoch-boundary"><i></i><span>Compaction</span><i></i></div>
+              <div class="epoch-segment"><small>context_epoch 2</small><strong>Compacted Prompt₂ → Response₂</strong></div>
             </div>
-            <div class="context-boundary"><i></i><strong>Compaction 边界</strong><span>摘要替换旧上下文</span></div>
-            <div class="alignment-state alignment-state--mismatch">
-              <small>压缩后</small>
-              <div class="alignment-track"><span>压缩后上下文</span><span>响应序列</span><span class="is-offset">log-prob 错位</span><span class="is-offset">loss mask 错位</span></div>
-            </div>
+            <div class="epoch-conclusion"><span>不同 epoch 使用不同 Prompt Context</span><i>→</i><strong>不能拼接为单一连续训练序列</strong></div>
           </section>
 
           <i class="challenge-transfer" aria-hidden="true">→</i>
 
           <section class="alignment-solution">
-            <div class="challenge-label"><small>解决方案</small><strong>context_epoch</strong></div>
+            <div class="challenge-label"><small>解决方案</small><strong>按上下文连续性切分</strong></div>
             <div class="alignment-solution-flow">
-              <div><small>01</small><strong>轨迹切分</strong></div><i>→</i>
+              <div><small>01</small><strong>按 context_epoch 切分</strong></div><i>→</i>
               <div><small>02</small><strong>重建 Token 对齐</strong></div><i>→</i>
-              <div><small>03</small><strong>片段 Loss</strong></div><i>→</i>
-              <div><small>04</small><strong>Execution Loss</strong></div>
+              <div><small>03</small><strong>计算 Segment Loss</strong></div><i>→</i>
+              <div><small>04</small><strong>聚合 Execution Loss</strong></div>
             </div>
-            <p>输入序列 · 响应序列 · rollout log-prob · loss mask</p>
+            <p>对齐 Response · rollout log-prob · loss mask</p>
           </section>
         </div>
       </section>
@@ -288,22 +322,24 @@
         <div class="content-heading reveal-group">
           <p class="kicker reveal">过程错误与优势修正</p>
           <h2 class="section-title reveal">
-            最终成功不能掩盖中间无效动作，<span>过程错误信号修正优势</span>
+            先计算 GRPO Advantage，<span>再用过程错误修正训练信号</span>
           </h2>
         </div>
 
-        <div class="error-visual reveal" aria-label="Outcome Reward 与过程错误信号共同修正优势">
-          <div class="error-principle"><span>Outcome Reward</span><i>+</i><span>过程错误</span><i>→</i><strong>错误感知优势</strong></div>
+        <div class="error-visual reveal" aria-label="Outcome Reward 经 GRPO 归一化得到原始优势，再用 Process Error Signal 修正">
+          <div class="error-principle"><span>Outcome Reward</span><i>→</i><span>GRPO 组内归一化</span><i>→</i><strong>原始优势 A<sub>GRPO</sub></strong></div>
 
           <div class="error-details">
             <section class="process-error-signals">
-              <div class="challenge-label"><small>过程错误</small><strong>无效中间动作</strong></div>
-              <div class="error-types"><span>格式错误</span><span>解析错误</span><span>工具执行错误</span></div>
+              <div class="challenge-label"><small>Process Error Signal</small><strong>可归因于 Policy 的过程错误</strong></div>
+              <div class="error-types"><span>格式错误</span><span>参数 / 解析错误</span><span>无效工具调用</span></div>
               <div class="severity-scale"><small>严重程度</small><span>轻</span><i></i><span>中</span><i></i><span>重</span></div>
+              <p class="attribution-note">不惩罚环境或工具服务自身故障</p>
             </section>
 
             <section class="advantage-rules">
-              <div class="challenge-label"><small>GRPO 归一化后</small><strong>优势修正</strong></div>
+              <div class="advantage-correction-flow"><span>原始优势 A<sub>GRPO</sub></span><i>+</i><span>Process Error Correction</span><i>→</i><strong>最终训练优势</strong></div>
+              <div class="challenge-label"><small>Error-Aware Correction</small><strong>优势修正规则</strong></div>
               <table>
                 <tbody>
                   <tr><td>A &gt; 0</td><td>正优势置零</td></tr>
