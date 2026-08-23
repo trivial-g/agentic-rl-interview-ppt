@@ -59,7 +59,7 @@
   --blue-glow: rgba(20, 95, 232, 0.2);
   --pad-x: clamp(2.25rem, 5vw, 6.8rem);
   --topbar-height: 4.8rem;
-  --font-latin: "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  --font-latin: "Inter", "MiSans", "HarmonyOS Sans SC", "PingFang SC", sans-serif;
   --font-display: "Inter", "MiSans", "HarmonyOS Sans SC", "PingFang SC", sans-serif;
   --font-body: "Inter", "MiSans", "HarmonyOS Sans SC", "PingFang SC", sans-serif;
   --font-mono: "Inter", "SFMono-Regular", "SF Mono", Menlo, monospace;
