@@ -4923,6 +4923,237 @@ main {
   display: none !important;
 }
 
+/* Page 2: strategy starting point to on-policy optimization */
+.slide--framework .framework-heading {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.slide--framework .section-title {
+  max-width: 54rem;
+}
+
+.strategy-progression {
+  min-height: clamp(30rem, 63vh, 36rem);
+  align-self: center;
+  display: grid;
+  grid-template-rows: auto 1.15rem minmax(5.3rem, 3fr) 1.15rem auto 1.15rem minmax(12.4rem, 7fr);
+  align-content: center;
+  justify-items: stretch;
+}
+
+.strategy-origin {
+  width: min(100%, 36rem);
+  justify-self: center;
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  gap: 0.8rem;
+  align-items: baseline;
+  padding: 0.62rem 1rem;
+  border-bottom: 1px solid rgba(35, 57, 88, 0.14);
+}
+
+.strategy-origin small,
+.strategy-stage__heading small {
+  color: var(--soft);
+  font-family: var(--font-latin);
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.strategy-origin strong {
+  color: var(--muted);
+  font-family: var(--font-latin);
+  font-size: clamp(1.02rem, 1.14vw, 1.25rem);
+  font-weight: 600;
+}
+
+.strategy-origin span {
+  color: var(--soft);
+  font-size: clamp(0.82rem, 0.88vw, 0.96rem);
+  font-weight: 400;
+}
+
+.progression-arrow {
+  align-self: center;
+  justify-self: center;
+  color: rgba(20, 95, 232, 0.5);
+  font-family: var(--font-latin);
+  font-size: 0.82rem;
+  font-style: normal;
+}
+
+.strategy-stage {
+  width: min(100%, 78rem);
+  justify-self: center;
+  display: grid;
+  grid-template-columns: minmax(12rem, 0.28fr) minmax(0, 0.72fr);
+  gap: clamp(1.4rem, 2.6vw, 2.8rem);
+  align-items: center;
+  padding: clamp(1rem, 1.4vw, 1.35rem) clamp(1.2rem, 1.8vw, 1.8rem);
+  border-radius: 0.45rem;
+}
+
+.strategy-stage__heading {
+  display: grid;
+  gap: 0.28rem;
+}
+
+.strategy-stage__heading h3 {
+  margin: 0;
+  font-family: var(--font-latin);
+  font-size: clamp(1.3rem, 1.65vw, 1.85rem);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.strategy-stage--sft {
+  border: 1px solid rgba(20, 95, 232, 0.2);
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.strategy-stage--sft .strategy-stage__heading h3 {
+  color: var(--muted);
+}
+
+.sft-signal-flow,
+.rl-optimization-flow {
+  min-width: 0;
+  display: grid;
+  align-items: center;
+}
+
+.sft-signal-flow {
+  grid-template-columns: minmax(9rem, 1.35fr) 1.8rem minmax(7rem, 0.8fr) 1.8rem minmax(9rem, 1.2fr);
+}
+
+.sft-signal-flow span,
+.sft-signal-flow strong {
+  color: var(--ink);
+  font-size: clamp(0.88rem, 0.98vw, 1.05rem);
+  font-weight: 500;
+  text-align: center;
+}
+
+.sft-signal-flow strong {
+  color: var(--blue-deep);
+  font-weight: 600;
+}
+
+.sft-signal-flow i,
+.rl-optimization-flow i {
+  color: rgba(20, 95, 232, 0.56);
+  font-family: var(--font-latin);
+  font-style: normal;
+  text-align: center;
+}
+
+.strategy-checkpoint {
+  width: min(100%, 29rem);
+  justify-self: center;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.7rem;
+  align-items: baseline;
+  padding: 0.58rem 1rem;
+  border: 1px solid rgba(20, 95, 232, 0.3);
+  border-radius: 999px;
+  background: rgba(238, 244, 255, 0.76);
+  text-align: center;
+}
+
+.strategy-checkpoint strong {
+  color: var(--blue-deep);
+  font-family: var(--font-latin);
+  font-size: clamp(0.9rem, 0.98vw, 1.06rem);
+  font-weight: 600;
+}
+
+.strategy-checkpoint span {
+  color: var(--soft);
+  font-size: clamp(0.76rem, 0.82vw, 0.88rem);
+  font-weight: 400;
+}
+
+.strategy-stage--rl {
+  border: 1px solid var(--blue);
+  background: var(--blue);
+}
+
+.strategy-stage--rl .strategy-stage__heading small {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.strategy-stage--rl .strategy-stage__heading h3 {
+  color: #ffffff;
+  font-size: clamp(1.65rem, 2vw, 2.25rem);
+  font-weight: 700;
+}
+
+.rl-optimization-flow {
+  grid-template-columns:
+    minmax(6.5rem, 0.85fr) 1.4rem
+    minmax(7.5rem, 1fr) 1.4rem
+    minmax(8rem, 1.08fr) 1.4rem
+    minmax(6.5rem, 0.85fr) 1.4rem
+    minmax(10rem, 1.35fr);
+}
+
+.rl-optimization-flow span,
+.rl-optimization-flow strong {
+  color: rgba(255, 255, 255, 0.84);
+  font-size: clamp(0.84rem, 0.92vw, 1rem);
+  font-weight: 500;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.rl-optimization-flow strong {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.rl-optimization-flow i {
+  color: rgba(255, 255, 255, 0.62);
+}
+
+@media (max-width: 1040px) {
+  .strategy-progression {
+    min-height: 0;
+    margin-top: 1.5rem;
+    grid-template-rows: none;
+    gap: 0.7rem;
+  }
+
+  .strategy-origin,
+  .strategy-checkpoint {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 0.25rem;
+  }
+
+  .strategy-stage {
+    width: min(100%, 42rem);
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .sft-signal-flow,
+  .rl-optimization-flow {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .sft-signal-flow i,
+  .rl-optimization-flow i {
+    width: 2.8rem;
+    min-height: 2.4rem;
+    justify-self: center;
+    display: grid;
+    place-items: center;
+    transform: rotate(90deg);
+  }
+}
+
 .slide--cold-start,
 .slide--task-reward,
 .slide--architecture,

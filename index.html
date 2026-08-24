@@ -61,70 +61,53 @@
         <div class="framework-heading reveal-group">
           <p class="kicker reveal">整体训练流程</p>
           <h2 class="section-title reveal">
-            Cold-Start SFT 初始化 Agent 能力，<span>Agentic-RL 基于真实任务反馈持续优化</span>
+            先提高策略起点，再用 Agentic-RL 持续优化
           </h2>
-          <p class="section-intro reveal">
-            离线 Teacher 监督 → On-policy Reward 优化
-          </p>
         </div>
 
-        <div class="framework-pipeline reveal" aria-label="Cold-Start SFT 到 Agentic-RL 的两阶段训练流程">
-          <section class="training-stage training-stage--sft" aria-labelledby="sft-title">
-            <div class="training-stage__heading">
-              <small>Stage I</small>
-              <h3 id="sft-title">Cold-Start SFT</h3>
-            </div>
+        <div class="strategy-progression reveal" aria-label="Base Model 能执行任务但成功率较低，先通过高质量 Teacher 轨迹进行 Cold-Start SFT 提高初始成功率，得到 Cold-Start Checkpoint 后，再通过真实任务 Rollout、Outcome Reward 和 GRPO 持续更新 Policy">
+          <section class="strategy-origin">
+            <small>问题起点</small>
+            <strong>Base Model</strong>
+            <span>能执行任务，但成功率较低</span>
+          </section>
 
-            <div class="stage-flow stage-flow--sft" aria-label="Cold-Start SFT Pipeline">
-              <div class="training-node"><small>01</small><strong>Query 合成</strong><span>基于种子数据合成真实 Agent 任务</span></div>
-              <i class="framework-flow-arrow" aria-hidden="true">→</i>
-              <div class="training-node"><small>02</small><strong>Teacher Rollout</strong><span>Qwen Teacher 在沙箱中通过 OpenClaw 执行任务</span></div>
-              <i class="framework-flow-arrow" aria-hidden="true">→</i>
-              <div class="training-node"><small>03</small><strong>轨迹筛选</strong><span>自动判分、轨迹检查与人工抽样复核</span></div>
-              <i class="framework-flow-arrow" aria-hidden="true">→</i>
-              <div class="training-node"><small>04</small><strong>Cold-Start SFT</strong><span>64K Context · 全参数训练</span></div>
+          <i class="progression-arrow" aria-hidden="true">↓</i>
+
+          <section class="strategy-stage strategy-stage--sft" aria-labelledby="strategy-sft-title">
+            <div class="strategy-stage__heading">
+              <small>Stage I · 前置阶段</small>
+              <h3 id="strategy-sft-title">Cold-Start SFT</h3>
+            </div>
+            <div class="sft-signal-flow" aria-label="高质量 Teacher 轨迹经过 Token 监督提高初始成功率">
+              <span>高质量 Teacher 轨迹</span><i aria-hidden="true">→</i>
+              <span>Token 监督</span><i aria-hidden="true">→</i>
+              <strong>提高初始成功率</strong>
             </div>
           </section>
 
-          <div class="checkpoint-handoff" aria-label="Cold-Start Checkpoint 是 Stage I 输出并初始化 Stage II">
-            <i aria-hidden="true">↓</i>
-            <div class="checkpoint-node">
-              <small>Stage I 输出 · Stage II 初始化</small>
-              <strong>Cold-Start Checkpoint</strong>
-              <span>作为 Agentic-RL 的初始化策略</span>
-            </div>
-            <i aria-hidden="true">↓</i>
+          <i class="progression-arrow" aria-hidden="true">↓</i>
+
+          <div class="strategy-checkpoint" aria-label="Cold-Start Checkpoint 作为 Agentic-RL 的初始 Policy">
+            <strong>Cold-Start Checkpoint</strong>
+            <span>作为 Agentic-RL 的初始 Policy</span>
           </div>
 
-          <section class="training-stage training-stage--rl" aria-labelledby="rl-title">
-            <div class="training-stage__heading">
-              <small>Stage II</small>
-              <h3 id="rl-title">Agentic-RL</h3>
+          <i class="progression-arrow" aria-hidden="true">↓</i>
+
+          <section class="strategy-stage strategy-stage--rl" aria-labelledby="strategy-rl-title">
+            <div class="strategy-stage__heading">
+              <small>Stage II · 核心主体</small>
+              <h3 id="strategy-rl-title">Agentic-RL</h3>
             </div>
-
-            <div class="stage-flow stage-flow--rl" aria-label="Agentic-RL Pipeline">
-              <div class="training-node"><small>01</small><strong>真实 Agent 任务</strong><span>真实任务与沙箱初始状态</span></div>
-              <i class="framework-flow-arrow" aria-hidden="true">→</i>
-              <div class="training-node"><small>02</small><strong>Policy Rollout</strong><span>通过 OpenClaw 执行任务</span></div>
-              <i class="framework-flow-arrow" aria-hidden="true">→</i>
-              <div class="training-node"><small>03</small><strong>Outcome Reward</strong><span>Hybrid Rubric 计算任务结果得分</span></div>
-              <i class="framework-flow-arrow" aria-hidden="true">→</i>
-              <div class="training-node"><small>04</small><strong>GRPO 更新</strong><span>计算优势并更新策略</span></div>
-              <i class="framework-flow-arrow" aria-hidden="true">→</i>
-              <div class="training-node"><small>05</small><strong>更新后的 Policy</strong><span>同步权重后继续 Rollout</span></div>
-
-              <div class="rl-return-loop" aria-label="更新后的 Policy 进入下一轮 Policy Rollout">
-                <i aria-hidden="true">←</i><span aria-hidden="true"></span><small>更新后的 Policy → Policy Rollout · 下一轮</small>
-              </div>
+            <div class="rl-optimization-flow" aria-label="真实任务经过 Policy Rollout、Outcome Reward 和 GRPO 更新，得到继续 Rollout 的新 Policy">
+              <span>真实任务</span><i aria-hidden="true">→</i>
+              <span>Policy Rollout</span><i aria-hidden="true">→</i>
+              <span>Outcome Reward</span><i aria-hidden="true">→</i>
+              <span>GRPO 更新</span><i aria-hidden="true">→</i>
+              <strong>新 Policy 继续 Rollout</strong>
             </div>
           </section>
-
-          <div class="engineering-support" aria-label="Agentic-RL 训练工程支撑">
-            <small>工程支撑</small>
-            <span>异步调度与容错</span><i aria-hidden="true">·</i>
-            <span>Compaction 感知的长程轨迹</span><i aria-hidden="true">·</i>
-            <span>错误感知优势塑形</span>
-          </div>
         </div>
 
       </section>
