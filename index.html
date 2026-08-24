@@ -42,13 +42,15 @@
             Agentic-RL
             <span><b>Post-Training</b></span>
           </h1>
-          <p class="opening-positioning reveal">面向 OpenClaw 真实工具任务的两阶段后训练系统，以 Agentic-RL 为核心提升 PinchBench 得分。</p>
+          <p class="opening-positioning reveal">高质量 Teacher 轨迹提高初始成功率，Agentic-RL 进一步优化真实任务表现，并通过 PinchBench 得分验证。</p>
         </div>
 
-        <div class="overview-route reveal" aria-label="Cold-Start SFT 完成能力初始化，Agentic-RL 在真实任务中持续优化，最后使用 PinchBench 验证得分">
-          <div class="overview-stage overview-stage--sft"><small>Stage I</small><strong>Cold-Start SFT</strong><span>能力初始化</span></div>
+        <div class="overview-route reveal" aria-label="Base Model 能执行任务但成功率较低，先通过 Cold-Start SFT 提高初始成功率，再由 Agentic-RL 基于真实任务反馈持续优化，最后使用 PinchBench 得分验证结果">
+          <div class="overview-origin"><small>问题起点</small><strong>Base Model</strong><span>能执行任务，但成功率较低</span></div>
           <i aria-hidden="true">→</i>
-          <div class="overview-stage overview-stage--rl"><small>Stage II · 核心主体</small><strong>Agentic-RL</strong><span>真实任务持续优化</span></div>
+          <div class="overview-stage overview-stage--sft"><small>Stage I · 前置阶段</small><strong>Cold-Start SFT</strong><span>提高初始成功率</span></div>
+          <i aria-hidden="true">→</i>
+          <div class="overview-stage overview-stage--rl"><small>Stage II · 核心主体</small><strong>Agentic-RL</strong><span>基于真实任务反馈持续优化</span></div>
           <i aria-hidden="true">→</i>
           <div class="overview-evaluation"><small>结果验证</small><strong>PinchBench 得分</strong><span>147 个 Agent 任务</span></div>
         </div>
