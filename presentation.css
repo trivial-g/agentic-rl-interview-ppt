@@ -5120,66 +5120,190 @@ main {
 }
 
 /* Page 3 */
+.slide--cold-start .section-title {
+  max-width: 66rem;
+}
+
 .cold-start-map {
-  min-height: clamp(18rem, 48vh, 27rem);
+  min-height: clamp(24rem, 56vh, 32rem);
   align-self: center;
   display: grid;
-  grid-template-columns:
-    minmax(8.6rem, 1fr) 1.5rem
-    minmax(8.6rem, 1fr) 1.5rem
-    minmax(8.6rem, 1fr) 1.5rem
-    minmax(9.2rem, 1.08fr) 1.5rem
-    minmax(8.6rem, 1fr) 1.5rem
-    minmax(8.8rem, 1fr);
-  gap: 0.28rem;
+  grid-template-columns: minmax(12rem, 0.82fr) 3rem minmax(22rem, 1.42fr) 3rem minmax(24rem, 1.62fr);
+  gap: clamp(0.4rem, 0.8vw, 0.9rem);
   align-items: center;
 }
 
-.cold-start-node {
+.query-source,
+.query-branch,
+.quality-lane {
   min-width: 0;
-  min-height: 9rem;
+}
+
+.query-source {
   display: grid;
-  grid-template-rows: auto auto;
-  gap: 0.58rem;
-  align-content: center;
-  padding: 1rem 0.9rem;
-  border: 1px solid rgba(20, 95, 232, 0.19);
-  border-radius: 0.4rem;
-  background: rgba(255, 255, 255, 0.7);
+  justify-items: start;
+  gap: 0.5rem;
+  padding-left: 0.35rem;
 }
 
-.cold-start-node small {
-  color: rgba(20, 95, 232, 0.76);
+.query-source small,
+.query-branch small,
+.trajectory-quality-gate small,
+.cold-start-destination small {
+  color: rgba(20, 95, 232, 0.72);
   font-family: var(--font-latin);
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   font-weight: 600;
 }
 
-.cold-start-node strong {
+.query-source strong {
+  color: var(--muted);
+  font-size: clamp(1.15rem, 1.35vw, 1.5rem);
+  font-weight: 600;
+}
+
+.query-source i,
+.quality-lane > i {
+  color: rgba(20, 95, 232, 0.5);
+  font-family: var(--font-latin);
+  font-style: normal;
+}
+
+.query-source span {
+  padding: 0.8rem 1rem;
+  border-left: 2px solid rgba(20, 95, 232, 0.34);
   color: var(--ink);
+  font-size: clamp(0.96rem, 1vw, 1.08rem);
+  font-weight: 500;
+}
+
+.query-fork,
+.branch-merge {
+  min-height: 14rem;
+  display: grid;
+  align-content: space-around;
+  justify-items: center;
+  color: rgba(20, 95, 232, 0.58);
   font-family: var(--font-latin);
-  font-size: clamp(0.96rem, 1vw, 1.1rem);
+  font-size: 1.05rem;
+}
+
+.query-branches {
+  display: grid;
+  gap: clamp(1.1rem, 2.4vh, 1.8rem);
+}
+
+.query-branch {
+  min-height: 8.4rem;
+  display: grid;
+  align-content: center;
+  gap: 0.42rem;
+  padding: 1rem 1.2rem;
+  border-top: 1px solid rgba(20, 95, 232, 0.2);
+  border-bottom: 1px solid rgba(20, 95, 232, 0.14);
+}
+
+.query-branch strong {
+  color: var(--ink);
+  font-size: clamp(1rem, 1.12vw, 1.22rem);
   font-weight: 600;
+  line-height: 1.3;
+}
+
+.query-branch span {
+  color: var(--soft);
+  font-size: clamp(0.82rem, 0.86vw, 0.94rem);
+  font-weight: 400;
   line-height: 1.35;
 }
 
-.cold-start-node span {
-  color: var(--soft);
-  font-size: 0.82rem;
-  font-weight: 400;
-  line-height: 1.5;
+.query-branch--criteria {
+  background: rgba(255, 255, 255, 0.34);
 }
 
-.cold-start-node--teacher,
-.cold-start-node--output {
-  background: rgba(238, 244, 255, 0.62);
+.query-branch--teacher {
+  background: rgba(238, 244, 255, 0.34);
 }
 
-.cold-start-node--training {
-  border-color: var(--blue);
+.quality-lane {
+  display: grid;
+  justify-items: stretch;
+  align-content: center;
+  gap: 0.52rem;
 }
 
-.cold-start-arrow,
+.quality-lane > i {
+  justify-self: center;
+  font-size: 0.86rem;
+}
+
+.trajectory-quality-gate {
+  min-height: 14rem;
+  display: grid;
+  align-content: center;
+  gap: 0.7rem;
+  padding: 1.45rem 1.7rem;
+  border: 1px solid var(--blue);
+  border-left-width: 4px;
+  border-radius: 0.45rem;
+  background: rgba(238, 244, 255, 0.72);
+}
+
+.trajectory-quality-gate strong {
+  color: var(--blue-deep);
+  font-size: clamp(1.5rem, 1.9vw, 2.2rem);
+  font-weight: 700;
+}
+
+.trajectory-quality-gate ul {
+  display: grid;
+  gap: 0.58rem;
+  margin: 0.1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.trajectory-quality-gate li {
+  padding-left: 1rem;
+  color: var(--ink);
+  font-size: clamp(0.94rem, 1vw, 1.08rem);
+  font-weight: 500;
+  line-height: 1.4;
+  position: relative;
+}
+
+.trajectory-quality-gate li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--blue);
+}
+
+.selected-trajectory,
+.cold-start-destination {
+  padding: 0.82rem 1.1rem;
+  border-top: 1px solid rgba(20, 95, 232, 0.18);
+  border-bottom: 1px solid rgba(20, 95, 232, 0.18);
+}
+
+.selected-trajectory strong {
+  color: var(--blue-deep);
+  font-size: clamp(0.96rem, 1.02vw, 1.12rem);
+  font-weight: 600;
+}
+
+.cold-start-destination {
+  display: grid;
+  gap: 0.28rem;
+  opacity: 0.82;
+}
+
+.cold-start-destination strong {
+  color: var(--muted);
+  font-size: clamp(0.92rem, 0.98vw, 1.06rem);
+  font-weight: 600;
+}
+
 .task-reward-arrow,
 .challenge-transfer,
 .scheduler-arrow {
@@ -6185,13 +6309,32 @@ main {
   }
 
   .overview-route > i,
-  .cold-start-arrow,
   .task-reward-arrow,
   .async-arrow,
   .scheduler-arrow,
   .challenge-transfer {
     min-height: 2.8rem;
     transform: rotate(90deg);
+  }
+
+  .query-fork,
+  .branch-merge {
+    display: none;
+  }
+
+  .query-source,
+  .query-branches,
+  .quality-lane {
+    width: min(100%, 42rem);
+    justify-self: center;
+  }
+
+  .query-source {
+    margin-bottom: 1rem;
+  }
+
+  .trajectory-quality-gate {
+    min-height: 0;
   }
 
   .overview-route > div,

@@ -133,22 +133,51 @@
         <div class="content-heading reveal-group">
           <p class="kicker reveal">冷启动数据与 SFT</p>
           <h2 class="section-title reveal">
-            高质量 Teacher 轨迹<span>构成 Cold-Start SFT 数据</span>
+            任务级验收条件与格式校验，筛出高质量 Teacher 轨迹
           </h2>
         </div>
 
-        <div class="cold-start-map reveal" aria-label="冷启动数据与 SFT 流程">
-          <div class="cold-start-node"><strong>种子任务</strong><span>真实 Agent 任务</span></div>
-          <i class="cold-start-arrow" aria-hidden="true">→</i>
-          <div class="cold-start-node"><strong>Query 合成</strong><span>任务类型 · 输入 · 执行约束</span></div>
-          <i class="cold-start-arrow" aria-hidden="true">→</i>
-          <div class="cold-start-node cold-start-node--teacher"><strong>Teacher Rollout</strong><span>Qwen · 沙箱 / OpenClaw</span></div>
-          <i class="cold-start-arrow" aria-hidden="true">→</i>
-          <div class="cold-start-node"><strong>轨迹筛选</strong><span>Verifier / LLM Judge · 轨迹校验 · 人工抽检</span></div>
-          <i class="cold-start-arrow" aria-hidden="true">→</i>
-          <div class="cold-start-node cold-start-node--training"><strong>Cold-Start SFT</strong><span>64K Context · 全参数训练</span></div>
-          <i class="cold-start-arrow" aria-hidden="true">→</i>
-          <div class="cold-start-node cold-start-node--output"><strong>Cold-Start Checkpoint</strong><span>Agentic-RL 初始化</span></div>
+        <div class="cold-start-map reveal" aria-label="Query 合成后，一个具体 Query 分别进入验收条件提取与 Teacher Rollout，两路信息汇入轨迹质量门，通过固定得分阈值和格式校验的高质量 Teacher 轨迹进入 64K 全参数 Cold-Start SFT">
+          <section class="query-source">
+            <small>上游输入</small>
+            <strong>Query 合成</strong>
+            <i aria-hidden="true">↓</i>
+            <span>一个具体 Query</span>
+          </section>
+
+          <div class="query-fork" aria-hidden="true"><span>↗</span><span>↘</span></div>
+
+          <div class="query-branches">
+            <section class="query-branch query-branch--criteria">
+              <small>验收条件</small>
+              <strong>强模型提取验收条件</strong>
+              <span>提取关键事实</span>
+              <span>提取任务要求</span>
+            </section>
+            <section class="query-branch query-branch--teacher">
+              <small>Teacher 执行</small>
+              <strong>Teacher Rollout</strong>
+              <span>OpenClaw Rollout</span>
+              <span>生成完整 Agent 轨迹</span>
+            </section>
+          </div>
+
+          <div class="branch-merge" aria-hidden="true"><span>↘</span><span>↗</span></div>
+
+          <section class="quality-lane">
+            <div class="trajectory-quality-gate">
+              <small>Quality Gate</small>
+              <strong>轨迹质量门</strong>
+              <ul>
+                <li>任务得分 ≥ 固定阈值</li>
+                <li>格式校验通过</li>
+              </ul>
+            </div>
+            <i aria-hidden="true">↓</i>
+            <div class="selected-trajectory"><strong>高质量 Teacher 轨迹</strong></div>
+            <i aria-hidden="true">↓</i>
+            <div class="cold-start-destination"><small>结果去向</small><strong>64K 全参数 Cold-Start SFT</strong></div>
+          </section>
         </div>
       </section>
 
