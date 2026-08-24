@@ -42,15 +42,15 @@
             Agentic-RL
             <span><b>Post-Training</b></span>
           </h1>
-          <p class="opening-positioning reveal">面向 OpenClaw 真实工具任务的 Agentic-RL 后训练</p>
+          <p class="opening-positioning reveal">面向 OpenClaw 真实工具任务的两阶段后训练系统，以 Agentic-RL 为核心提升 PinchBench 得分。</p>
         </div>
 
-        <div class="overview-route reveal" aria-label="Cold-Start SFT、Agentic-RL 与 PinchBench 评测">
-          <div><small>Stage I</small><strong>Cold-Start SFT</strong></div>
+        <div class="overview-route reveal" aria-label="Cold-Start SFT 完成能力初始化，Agentic-RL 在真实任务中持续优化，最后使用 PinchBench 验证得分">
+          <div class="overview-stage overview-stage--sft"><small>Stage I</small><strong>Cold-Start SFT</strong><span>能力初始化</span></div>
           <i aria-hidden="true">→</i>
-          <div><small>Stage II</small><strong>Agentic-RL</strong></div>
+          <div class="overview-stage overview-stage--rl"><small>Stage II · 核心主体</small><strong>Agentic-RL</strong><span>真实任务持续优化</span></div>
           <i aria-hidden="true">→</i>
-          <div><small>评测</small><strong>PinchBench</strong></div>
+          <div class="overview-evaluation"><small>结果验证</small><strong>PinchBench 得分</strong><span>147 个 Agent 任务</span></div>
         </div>
 
       </section>

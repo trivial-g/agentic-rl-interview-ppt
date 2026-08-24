@@ -4980,7 +4980,7 @@ main {
 }
 
 .opening-positioning {
-  max-width: 48rem;
+  max-width: 58rem;
   margin: 0.9rem 0 0;
   color: var(--muted);
   font-size: clamp(0.96rem, 1vw, 1.18rem);
@@ -4989,10 +4989,10 @@ main {
 }
 
 .overview-route {
-  width: min(100%, 76rem);
+  width: min(100%, 82rem);
   align-self: center;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 3.5rem minmax(0, 1fr) 3.5rem minmax(0, 1fr);
+  grid-template-columns: minmax(14rem, 3fr) 3rem minmax(28rem, 7fr) 3rem minmax(13rem, 2.2fr);
   align-items: center;
 }
 
@@ -5006,10 +5006,17 @@ main {
   border-bottom: 1px solid var(--line-strong);
 }
 
+.overview-route > div span {
+  color: var(--soft);
+  font-size: 0.86rem;
+  font-weight: 400;
+  line-height: 1.45;
+}
+
 .overview-route small {
   color: var(--blue);
   font-family: var(--font-latin);
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   font-weight: 600;
 }
 
@@ -5020,8 +5027,58 @@ main {
   font-weight: 600;
 }
 
-.overview-route > div:nth-of-type(2) {
-  border-color: rgba(20, 95, 232, 0.38);
+.overview-route > .overview-stage--sft {
+  border-color: rgba(35, 57, 88, 0.16);
+  background: rgba(255, 255, 255, 0.44);
+}
+
+.overview-stage--sft small {
+  color: var(--soft);
+}
+
+.overview-stage--sft strong {
+  color: var(--muted);
+  font-size: clamp(1.22rem, 1.45vw, 1.55rem);
+}
+
+.overview-route > .overview-stage--rl {
+  min-height: 10.4rem;
+  padding: 1.35rem 1.65rem;
+  border-color: var(--blue);
+  background: var(--blue);
+}
+
+.overview-route > .overview-stage--rl small,
+.overview-route > .overview-stage--rl span {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.overview-stage--rl strong {
+  color: #ffffff;
+  font-size: clamp(1.85rem, 2.35vw, 2.7rem);
+  font-weight: 700;
+}
+
+.overview-route > .overview-evaluation {
+  min-height: 6.7rem;
+  gap: 0.32rem;
+  padding: 0.95rem 1.05rem;
+  border-color: rgba(20, 95, 232, 0.2);
+  background: rgba(238, 244, 255, 0.38);
+}
+
+.overview-evaluation small {
+  color: rgba(20, 95, 232, 0.72);
+}
+
+.overview-evaluation strong {
+  color: var(--blue-deep);
+  font-size: clamp(1.02rem, 1.15vw, 1.22rem);
+  line-height: 1.35;
+}
+
+.overview-route > .overview-evaluation span {
+  font-size: 0.8rem;
 }
 
 .overview-route > i {
@@ -5030,6 +5087,10 @@ main {
   font-size: 1rem;
   font-style: normal;
   text-align: center;
+}
+
+.overview-route > i:last-of-type {
+  color: rgba(20, 95, 232, 0.48);
 }
 
 /* Page 3 */
@@ -6113,6 +6174,11 @@ main {
   .async-node,
   .scheduler-node,
   .alignment-solution-flow > div {
+    min-height: 0;
+  }
+
+  .overview-route > .overview-stage--rl,
+  .overview-route > .overview-evaluation {
     min-height: 0;
   }
 
