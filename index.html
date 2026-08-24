@@ -61,51 +61,46 @@
         <div class="framework-heading reveal-group">
           <p class="kicker reveal">整体训练流程</p>
           <h2 class="section-title reveal">
-            先提高策略起点，再用 Agentic-RL 持续优化
+            Teacher 监督提高策略起点，Agentic-RL 形成持续优化闭环
           </h2>
         </div>
 
-        <div class="strategy-progression reveal" aria-label="Base Model 能执行任务但成功率较低，先通过高质量 Teacher 轨迹进行 Cold-Start SFT 提高初始成功率，得到 Cold-Start Checkpoint 后，再通过真实任务 Rollout、Outcome Reward 和 GRPO 持续更新 Policy">
-          <section class="strategy-origin">
-            <small>问题起点</small>
-            <strong>Base Model</strong>
-            <span>能执行任务，但成功率较低</span>
-          </section>
-
-          <i class="progression-arrow" aria-hidden="true">↓</i>
-
-          <section class="strategy-stage strategy-stage--sft" aria-labelledby="strategy-sft-title">
-            <div class="strategy-stage__heading">
+        <div class="two-stage-landscape reveal" aria-label="高质量 Teacher 轨迹通过 Token 监督提高策略起点，Cold-Start Checkpoint 作为 Agentic-RL 初始 Policy，随后基于当前 Policy 的 OpenClaw Rollout、Outcome Reward 和 GRPO 更新形成持续优化闭环">
+          <section class="training-side training-side--sft" aria-labelledby="landscape-sft-title">
+            <div class="training-side__heading">
               <small>Stage I · 前置阶段</small>
-              <h3 id="strategy-sft-title">Cold-Start SFT</h3>
+              <h3 id="landscape-sft-title">Cold-Start SFT</h3>
             </div>
-            <div class="sft-signal-flow" aria-label="高质量 Teacher 轨迹经过 Token 监督提高初始成功率">
-              <span>高质量 Teacher 轨迹</span><i aria-hidden="true">→</i>
-              <span>Token 监督</span><i aria-hidden="true">→</i>
+            <div class="sft-supervision-chain" aria-label="高质量 Teacher 轨迹经过 Token 监督提高初始成功率">
+              <span>高质量 Teacher 轨迹</span><i aria-hidden="true">↓</i>
+              <span>Token 监督</span><i aria-hidden="true">↓</i>
               <strong>提高初始成功率</strong>
             </div>
           </section>
 
-          <i class="progression-arrow" aria-hidden="true">↓</i>
-
-          <div class="strategy-checkpoint" aria-label="Cold-Start Checkpoint 作为 Agentic-RL 的初始 Policy">
+          <div class="checkpoint-transfer" aria-label="Cold-Start Checkpoint 作为 Agentic-RL 初始 Policy">
+            <small>阶段交接</small>
             <strong>Cold-Start Checkpoint</strong>
-            <span>作为 Agentic-RL 的初始 Policy</span>
+            <div aria-hidden="true"><span></span><i>→</i></div>
+            <p>Agentic-RL 初始 Policy</p>
           </div>
 
-          <i class="progression-arrow" aria-hidden="true">↓</i>
-
-          <section class="strategy-stage strategy-stage--rl" aria-labelledby="strategy-rl-title">
-            <div class="strategy-stage__heading">
+          <section class="training-side training-side--rl" aria-labelledby="landscape-rl-title">
+            <div class="training-side__heading">
               <small>Stage II · 核心主体</small>
-              <h3 id="strategy-rl-title">Agentic-RL</h3>
+              <h3 id="landscape-rl-title">Agentic-RL</h3>
             </div>
-            <div class="rl-optimization-flow" aria-label="真实任务经过 Policy Rollout、Outcome Reward 和 GRPO 更新，得到继续 Rollout 的新 Policy">
-              <span>真实任务</span><i aria-hidden="true">→</i>
-              <span>Policy Rollout</span><i aria-hidden="true">→</i>
-              <span>Outcome Reward</span><i aria-hidden="true">→</i>
-              <span>GRPO 更新</span><i aria-hidden="true">→</i>
-              <strong>新 Policy 继续 Rollout</strong>
+            <div class="rl-cycle" aria-label="初始 Policy 经过 OpenClaw Rollout、Outcome Reward 和 GRPO 更新，更新后的 Policy 回到下一轮 Rollout">
+              <div class="rl-cycle__track">
+                <span>初始 Policy</span><i aria-hidden="true">→</i>
+                <span>OpenClaw Rollout</span><i aria-hidden="true">→</i>
+                <span>Outcome Reward</span><i aria-hidden="true">→</i>
+                <span>GRPO 更新</span><i aria-hidden="true">→</i>
+                <strong>更新后的 Policy</strong>
+              </div>
+              <div class="rl-cycle__return" aria-label="更新后的 Policy 回到下一轮 Rollout">
+                <i aria-hidden="true">←</i><span aria-hidden="true"></span><strong>回到下一轮 Rollout</strong>
+              </div>
             </div>
           </section>
         </div>

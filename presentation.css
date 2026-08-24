@@ -5154,6 +5154,275 @@ main {
   }
 }
 
+/* Page 2: horizontal SFT to Agentic-RL loop */
+.slide--framework .section-title {
+  max-width: 70rem;
+}
+
+.two-stage-landscape {
+  width: min(100%, 86rem);
+  min-height: clamp(25rem, 55vh, 31rem);
+  align-self: center;
+  justify-self: center;
+  display: grid;
+  grid-template-columns: minmax(17rem, 3fr) minmax(10.5rem, 1.7fr) minmax(38rem, 7fr);
+  gap: clamp(0.8rem, 1.25vw, 1.3rem);
+  align-items: stretch;
+}
+
+.training-side {
+  min-width: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: clamp(1.5rem, 3.2vh, 2.4rem);
+  padding: clamp(1.3rem, 1.7vw, 1.8rem);
+  border-radius: 0.45rem;
+}
+
+.training-side__heading {
+  display: grid;
+  gap: 0.32rem;
+}
+
+.training-side__heading small,
+.checkpoint-transfer > small {
+  color: var(--soft);
+  font-family: var(--font-latin);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.training-side__heading h3 {
+  margin: 0;
+  font-family: var(--font-latin);
+  font-size: clamp(1.45rem, 1.72vw, 1.95rem);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.training-side--sft {
+  border-top: 1px solid rgba(20, 95, 232, 0.22);
+  border-bottom: 1px solid rgba(35, 57, 88, 0.12);
+  background: rgba(255, 255, 255, 0.42);
+}
+
+.training-side--sft .training-side__heading h3 {
+  color: var(--muted);
+}
+
+.sft-supervision-chain {
+  display: grid;
+  align-content: center;
+  justify-items: stretch;
+  gap: 0.65rem;
+}
+
+.sft-supervision-chain span,
+.sft-supervision-chain strong {
+  padding: 0.82rem 0.55rem;
+  border-bottom: 1px solid rgba(35, 57, 88, 0.12);
+  color: var(--ink);
+  font-size: clamp(0.9rem, 0.96vw, 1.04rem);
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.sft-supervision-chain strong {
+  border-bottom-color: rgba(20, 95, 232, 0.26);
+  color: var(--blue-deep);
+  font-weight: 600;
+}
+
+.sft-supervision-chain i {
+  color: rgba(20, 95, 232, 0.48);
+  font-family: var(--font-latin);
+  font-size: 0.78rem;
+  font-style: normal;
+  text-align: center;
+}
+
+.checkpoint-transfer {
+  min-width: 0;
+  align-self: center;
+  display: grid;
+  gap: 0.55rem;
+  align-content: center;
+  padding: 1rem 0.35rem;
+}
+
+.checkpoint-transfer > small {
+  color: rgba(20, 95, 232, 0.62);
+}
+
+.checkpoint-transfer > strong {
+  color: var(--blue-deep);
+  font-family: var(--font-latin);
+  font-size: clamp(0.9rem, 0.98vw, 1.08rem);
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.checkpoint-transfer > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+}
+
+.checkpoint-transfer > div span {
+  height: 1px;
+  background: rgba(20, 95, 232, 0.36);
+}
+
+.checkpoint-transfer > div i {
+  color: var(--blue);
+  font-family: var(--font-latin);
+  font-size: 0.88rem;
+  font-style: normal;
+}
+
+.checkpoint-transfer p {
+  margin: 0;
+  color: var(--soft);
+  font-size: clamp(0.78rem, 0.84vw, 0.9rem);
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.training-side--rl {
+  border-top: 2px solid var(--blue);
+  border-bottom: 1px solid rgba(20, 95, 232, 0.18);
+  background: rgba(238, 244, 255, 0.6);
+}
+
+.training-side--rl .training-side__heading small {
+  color: rgba(20, 95, 232, 0.72);
+}
+
+.training-side--rl .training-side__heading h3 {
+  color: var(--blue-deep);
+  font-size: clamp(1.85rem, 2.2vw, 2.5rem);
+  font-weight: 700;
+}
+
+.rl-cycle {
+  min-width: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: clamp(1.5rem, 3.3vh, 2.4rem);
+  align-content: center;
+}
+
+.rl-cycle__track {
+  min-width: 0;
+  display: grid;
+  grid-template-columns:
+    minmax(5.8rem, 0.8fr) 1.15rem
+    minmax(7.5rem, 1.05fr) 1.15rem
+    minmax(7.5rem, 1.05fr) 1.15rem
+    minmax(5.8rem, 0.82fr) 1.15rem
+    minmax(8.2rem, 1.18fr);
+  align-items: stretch;
+}
+
+.rl-cycle__track span,
+.rl-cycle__track strong {
+  min-width: 0;
+  min-height: 6.7rem;
+  display: grid;
+  place-items: center;
+  padding: 0.75rem 0.5rem;
+  border: 1px solid rgba(20, 95, 232, 0.18);
+  background: rgba(255, 255, 255, 0.58);
+  color: var(--ink);
+  font-size: clamp(0.82rem, 0.88vw, 0.96rem);
+  font-weight: 500;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.rl-cycle__track strong {
+  border-color: rgba(20, 95, 232, 0.42);
+  color: var(--blue-deep);
+  font-weight: 600;
+}
+
+.rl-cycle__track i {
+  align-self: center;
+  color: rgba(20, 95, 232, 0.58);
+  font-family: var(--font-latin);
+  font-size: 0.8rem;
+  font-style: normal;
+  text-align: center;
+}
+
+.rl-cycle__return {
+  width: 78%;
+  justify-self: end;
+  display: grid;
+  grid-template-columns: auto minmax(2rem, 1fr) auto;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.rl-cycle__return > i {
+  color: var(--blue);
+  font-family: var(--font-latin);
+  font-size: 0.88rem;
+  font-style: normal;
+}
+
+.rl-cycle__return > span {
+  height: 1px;
+  background: rgba(20, 95, 232, 0.36);
+}
+
+.rl-cycle__return > strong {
+  color: var(--blue-deep);
+  font-size: clamp(0.76rem, 0.82vw, 0.9rem);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+@media (max-width: 1040px) {
+  .two-stage-landscape {
+    min-height: 0;
+    margin-top: 1.5rem;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .training-side {
+    width: min(100%, 42rem);
+    justify-self: center;
+  }
+
+  .checkpoint-transfer {
+    width: min(100%, 20rem);
+    justify-self: center;
+  }
+
+  .checkpoint-transfer > div {
+    transform: rotate(90deg);
+  }
+
+  .rl-cycle__track {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .rl-cycle__track i {
+    min-height: 2.5rem;
+    display: grid;
+    place-items: center;
+    transform: rotate(90deg);
+  }
+
+  .rl-cycle__return {
+    width: 100%;
+  }
+}
+
 .slide--cold-start,
 .slide--task-reward,
 .slide--architecture,
