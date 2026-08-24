@@ -286,34 +286,34 @@
         <div class="content-heading reveal-group">
           <p class="kicker reveal">长程训练一致性</p>
           <h2 class="section-title reveal">
-            Compaction 改变 Prompt Context，<span>context_epoch 按连续上下文重建训练序列</span>
+            长程 Execution 跨越 Compaction 后，<span>需按 context_epoch 分段训练</span>
           </h2>
         </div>
 
-        <div class="compaction-visual reveal" aria-label="Execution 跨越多个 context_epoch 后的上下文不连续与训练序列重建">
+        <div class="compaction-visual reveal" aria-label="同一 Execution 跨越多个 Compaction，训练时按 context_epoch 切分连续上下文 Segment 并聚合回原 Execution">
           <section class="alignment-problem">
-            <div class="challenge-label"><small>问题</small><strong>一个 Execution 跨越多个 context_epoch</strong></div>
-            <div class="epoch-sequence">
-              <div class="epoch-segment"><small>context_epoch 0</small><strong>Prompt₀ → Response₀</strong></div>
-              <div class="epoch-boundary"><i></i><span>Compaction</span><i></i></div>
-              <div class="epoch-segment"><small>context_epoch 1</small><strong>压缩后 Prompt₁ → Response₁</strong></div>
-              <div class="epoch-boundary"><i></i><span>Compaction</span><i></i></div>
-              <div class="epoch-segment"><small>context_epoch 2</small><strong>压缩后 Prompt₂ → Response₂</strong></div>
+            <div class="challenge-label"><small>问题</small><strong>One Execution 跨越多个 Compaction</strong></div>
+            <div class="execution-segments" aria-label="One Execution 中的三个连续上下文 Segment">
+              <div class="context-segment"><small>context_epoch 0 · 连续 Context Segment</small><strong>Turn 1 → Tool → Turn 2 → Tool → Turn 3</strong></div>
+              <div class="compaction-divider"><i></i><span>Compaction</span></div>
+              <div class="context-segment"><small>context_epoch 1 · 连续 Context Segment</small><strong>Turn 4 → Tool → Turn 5 → Tool → Turn 6</strong></div>
+              <div class="compaction-divider"><i></i><span>Compaction</span></div>
+              <div class="context-segment"><small>context_epoch 2 · 连续 Context Segment</small><strong>Turn 7 → Tool → Final</strong></div>
             </div>
-            <div class="epoch-conclusion"><span>不同 epoch 使用不同 Prompt Context</span><i>→</i><strong>不能拼接为单一连续训练序列</strong></div>
+            <div class="execution-conclusion"><strong>整条 Execution 不能直接按单一 Context 重放训练</strong></div>
           </section>
 
           <i class="challenge-transfer" aria-hidden="true">→</i>
 
           <section class="alignment-solution">
-            <div class="challenge-label"><small>解决方案</small><strong>按上下文连续性切分</strong></div>
+            <div class="challenge-label"><small>解决方案</small><strong>按上下文连续性重建训练片段</strong></div>
             <div class="alignment-solution-flow">
-              <div><small>01</small><strong>按 context_epoch 切分</strong></div><i>→</i>
-              <div><small>02</small><strong>重建 Token 对齐</strong></div><i>→</i>
-              <div><small>03</small><strong>计算 Segment Loss</strong></div><i>→</i>
-              <div><small>04</small><strong>聚合 Execution Loss</strong></div>
+              <div><small>01</small><strong>context_epoch 标记边界</strong></div>
+              <div><small>02</small><strong>切分连续 Context Segment</strong></div>
+              <div><small>03</small><strong>对齐训练 Token</strong></div>
+              <div><small>04</small><strong>聚合回原 Execution</strong><span>Segment Loss → Execution Loss</span></div>
             </div>
-            <p>对齐 Response · rollout log-prob · loss mask</p>
+            <p>Response · rollout log-prob · loss mask</p>
           </section>
         </div>
       </section>
