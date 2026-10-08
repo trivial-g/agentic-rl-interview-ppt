@@ -6957,3 +6957,67 @@ main {
     transition-duration: 1ms !important;
   }
 }
+
+/*
+ * Visual refresh: stronger contrast, consistent cards, and no stretched flow boxes.
+ */
+:root {
+  --paper: #f4f6fa;
+  --muted: #4b5568;
+  --soft: #6b7689;
+  --line: rgba(35, 57, 88, 0.12);
+  --line-strong: rgba(35, 57, 88, 0.22);
+  --card-shadow: 0 1px 2px rgba(23, 32, 51, 0.04), 0 6px 18px rgba(23, 32, 51, 0.06);
+}
+
+.slide small {
+  color: var(--soft);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.slide .section-intro,
+.slide p {
+  color: var(--muted);
+}
+
+/* Node cards: uniform size, centred content, one card treatment */
+.rl-cycle__track > span,
+.rl-cycle__track > strong,
+.scheduler-main-flow > .scheduler-node,
+.plane-primary-node,
+.task-reward-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+  padding: 1rem 1.2rem;
+}
+
+.rl-cycle__track > span,
+.rl-cycle__track > strong,
+.scheduler-main-flow > .scheduler-node {
+  min-height: 5.6rem;
+}
+
+.rl-cycle__track,
+.scheduler-main-flow {
+  align-items: center;
+}
+
+.result-row > b {
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+@media (max-width: 900px) {
+  .rl-cycle__track > span,
+  .rl-cycle__track > strong,
+  .scheduler-main-flow > .scheduler-node {
+    min-height: 0;
+  }
+}
